@@ -1,0 +1,69 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>Click</button>
+    <script>
+      const initApp = () => {
+        const button = document.querySelector("button");
+        button.addEventListener("click", throttle(logApp, 3000));
+      };
+      document.addEventListener("DOMContentLoaded", initApp);
+      const logApp = () => console.log("say hi");
+      // debounce
+      const debounce = (fn, delay = 0) => {
+        let timerId;
+        console.log(`timerId immedidate at : ${timerId}`);
+        return () => {
+          console.log(`timerId previous at : ${timerId}`);
+          if (timerId) {
+            clearTimeout(timerId);
+            timerId = null;
+          }
+          timerId = setTimeout(() => {
+            fn();
+          }, delay);
+        };
+      };
+      // throttle
+
+      const throttle = (fn, delay) => {
+        delay = delay || 0;
+        let last = 0;
+       
+        return () => {
+          const now = new Date().getTime();
+          if (now - last < delay) return
+          console.log('run');
+          last = now;
+          fn();
+        };
+      };
+
+      // strategy pattern
+      function Price11 (price) {
+        console.log('price',price * 0.6);
+        return price * 0.6
+      }
+      function Price12 (price) {
+        return price * 0.4
+      }
+      function Price13 (price) {
+        return price * 0.5
+      }
+      const getPriceStrategy = {
+        sale11_11:Price11,
+        sale11_12:Price12,
+        sale11_13:Price13
+      }
+      function getPrice(price,event) {
+        return getPriceStrategy[event](price)
+      }
+      getPrice(200 , 'sale11_11')
+    </script>
+  </body>
+</html>
